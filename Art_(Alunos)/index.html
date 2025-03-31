@@ -184,25 +184,40 @@
     </footer>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const titleElement = document.getElementById("animated-title");
-      const titleText = "Ian Hawke";
-      let index = 0;
-  
-      function typeWriter() {
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const titleElement = document.getElementById("animated-title");
+    const titleText = "Ian Hawke";
+    let index = 0;
+    let deleting = false;
+
+    function typeWriter() {
+      if (!deleting) {
+        // Digitando o texto
         if (index < titleText.length) {
           titleElement.textContent += titleText.charAt(index);
           index++;
-          setTimeout(typeWriter, 150); // Velocidade da digitação
         } else {
-          titleElement.style.borderRight = "none"; // Remove o cursor no final
+          deleting = true;
+          setTimeout(typeWriter, 2000); // Espera antes de apagar
+          return;
+        }
+      } else {
+        // Apagando o texto
+        if (index > 0) {
+          titleElement.textContent = titleText.substring(0, index - 1);
+          index--;
+        } else {
+          deleting = false;
         }
       }
-  
-      typeWriter(); // Inicia a animação
-    });
-  </script>
+      setTimeout(typeWriter, deleting ? 100 : 150); // Velocidade de apagar e escrever
+    }
+
+    typeWriter(); // Inicia a animação
+  });
+</script>
+
   
 </body>
 </html>
